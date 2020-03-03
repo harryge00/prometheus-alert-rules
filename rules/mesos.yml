@@ -1,6 +1,15 @@
 groups:
 - name: mesos
   rules:
+  - alert: Mesos master状态异常
+    expr: up{job="master-metrics"}==0 
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: mesos master服务器可能宕机
+      description: 请马上检查服务器{{$labels.instance}}!
+
   - alert: mesos master健康状态
     expr: mesos_master_uptime_secs <60
     for: 1m
@@ -36,23 +45,23 @@ groups:
     annotations:
       summary: Mesos master出现任务丢失!
 
-  - alert: mesos集群CPU分配百分比
-    expr: ceil(quantile_over_time(0,mesos_slave_cpus_percent[5m])*100) > 95 
-    for: 5m
-    labels:
-      severity: warning
-    annotations:
-      summary: slave集群{{$labels.host}}的CPU分配百分比连续超过90%!
-      description: 总百分比={{$value}}%      
+  # - alert: mesos集群CPU分配百分比
+  #   expr: ceil(quantile_over_time(0,mesos_slave_cpus_percent[5m])*100) > 95 
+  #   for: 5m
+  #   labels:
+  #     severity: warning
+  #   annotations:
+  #     summary: slave集群{{$labels.host}}的CPU分配百分比连续超过90%!
+  #     description: 总百分比={{$value}}%      
       
-  - alert: mesos集群内存分配百分比
-    expr: ceil(quantile_over_time(0,mesos_slave_mem_percent[5m])*100) > 95
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      summary: slave集群{{$labels.host}}的内存分配百分比连续超过90%!
-      description: 总百分比={{$value}}%
+  # - alert: mesos集群内存分配百分比
+  #   expr: ceil(quantile_over_time(0,mesos_slave_mem_percent[5m])*100) > 95
+  #   for: 5m
+  #   labels:
+  #     severity: critical
+  #   annotations:
+  #     summary: slave集群{{$labels.host}}的内存分配百分比连续超过90%!
+  #     description: 总百分比={{$value}}%
       
   - alert: mesos master选举情况
     expr: max(avg_over_time(mesos_master_elected[5m])) < 1
