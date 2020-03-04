@@ -1,7 +1,7 @@
 global:
   smtp_smarthost: 'smtp.126.com:25'
-  smtp_from: 'test@126.com'
-  smtp_auth_username: 'test@126.com'
+  smtp_from: 'gavin_w@126.com'
+  smtp_auth_username: 'gavin_w@126.com'
 
 route:
   # The labels by which incoming alerts are grouped together. For example,
@@ -36,5 +36,5 @@ route:
 receivers:
 - name: send_to_dingding_webhook1
   webhook_configs:
-  - send_resolved: false
+  - send_resolved: true
     url: http://dingtalk-webhook.marathon.l4lb.thisdcos.directory:8060/dingtalk/webhook1/send
