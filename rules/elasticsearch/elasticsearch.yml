@@ -87,7 +87,7 @@ groups:
           summary: 'ElasticSearch node {{ $labels.instance }}: GC run time in seconds
         > 0.3 sec and has a value of {{ $value }}'
       - alert: Elasticsearch_json_parse_failures
-        expr: elasticsearch_cluster_health_json_parse_failures > 0
+        expr: elasticsearch_cluster_health_json_parse_failures > 5
         for: 1m
         labels:
           severity: warning
