@@ -5,6 +5,8 @@
 groups:
 - name: MySQLAlerts
   rules:
+  - record: mysql_slave_lag_seconds
+    expr: mysql_slave_status_seconds_behind_master - mysql_slave_status_sql_delay
   - alert: MySQLReplicationNotRunning
     expr: mysql_slave_status_slave_io_running == 0 or mysql_slave_status_slave_sql_running
       == 0
@@ -16,12 +18,13 @@ groups:
       description: "{{ $labels.job }}: Slave replication (IO or SQL) has been down for more than 2 minutes."
 
   - alert: MySQLReplicationLag
-    expr: (mysql_slave_status_seconds_behind_master - mysql_slave_status_sql_delay) > 300
+    expr: (mysql_slave_lag_seconds > 30) and ON(instance) (predict_linear(mysql_slave_lag_seconds[5m],
+      60 * 2) > 0)
     for: 1m
     labels:
-      severity: warning
+      severity: critical
     annotations:
-      description: "{{ $labels.job }}: The mysql slave replication has fallen behind"
+      description: The mysql slave replication has fallen behind and is not recovering
       summary: MySQL slave replication is lagging
   
   - alert: MySQLInnoDBLogWaits
