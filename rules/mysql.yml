@@ -1,0 +1,132 @@
+# Record slave lag seconds for pre-computed timeseries that takes
+# `mysql_slave_status_sql_delay` into account
+###
+# MySQL Alerts
+groups:
+- name: MySQLAlerts
+  rules:
+  - alert: MySQLReplicationNotRunning
+    expr: mysql_slave_status_slave_io_running == 0 or mysql_slave_status_slave_sql_running
+      == 0
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Slave replication is not running in {{ $labels.instance }}"
+      description: "{{ $labels.job }}: Slave replication (IO or SQL) has been down for more than 2 minutes."
+
+  - alert: MySQLReplicationLag
+    expr: (mysql_slave_status_seconds_behind_master - mysql_slave_status_sql_delay) > 300
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      description: "{{ $labels.job }}: The mysql slave replication has fallen behind"
+      summary: MySQL slave replication is lagging
+  
+  - alert: MySQLInnoDBLogWaits
+    expr: rate(mysql_global_status_innodb_log_waits[15m]) > 10
+    labels:
+      severity: warning
+    annotations:
+      summary: "MySQL innodb log writes stalling in {{ $labels.instance }}"
+      description: "{{ $labels.job }}: innodb logs are waiting for disk at a rate of {{$value}} /
+              second"
+
+  # Alert for mysql_global_status_connection_errors_total !=0 for >1 minutes.
+  - alert: mysql_global_status_connection_errors_total
+    expr: mysql_global_status_connection_errors_total !=0
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "mysql_global_status_connection_errors_total !=0 for >1 minutes in {{ $labels.instance }}"
+      description: "{{ $labels.job }}: mysql_global_status_connection_errors_total !=0"
+
+  # Alert for mysql_global_status_uptime == 0 for >1 minutes.
+  - alert: mysql_global_status_uptime
+    expr: mysql_global_status_uptime == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "mysql_global_status_uptime == 0 for >1 minutes in {{ $labels.instance }}"
+      description: "{{ $labels.job }}: mysql_global_status_uptime == 0"
+
+  # Alert for mysql_up == 0 for >1 minutes.
+  - alert: mysql_up
+    expr: mysql_up == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "mysql_up == 0 for >1 minutes in {{ $labels.instance }}"
+      description: "{{ $labels.job }}: mysql_up == 0"
+
+  - alert: Mysql_Too_Many_Connections
+    expr: rate(mysql_global_status_connections[5m]) > 100
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{$labels.instance}}: Mysql Too Many Connections detected"
+      description: "{{$labels.instance}} of {{ $labels.job }}: Mysql Connections is more than 1000 per second ,(current value is: {{ $value }})"  
+
+  - alert: Mysql_High_QPS
+    expr: rate(mysql_global_status_questions[5m]) > 500 
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{$labels.instance}}: Mysql_High_QPS detected"
+      description: "{{$labels.instance}} of {{ $labels.job }}: Mysql opreation is more than 500 per second ,(current value is: {{ $value }})"  
+
+  # Alert for mysql_global_status_threads_cached == 0 for >1 minutes.
+  - alert: mysql_global_status_threads_cached 
+    expr: mysql_global_status_threads_cached == 0
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "mysql_global_status_threads_cached == 0 for >1 minutes in {{ $labels.instance }}"
+      description: "{{ $labels.job }}: mysql_global_status_threads_cached == 0"
+
+  # Alert for mysql_global_status_threads_connected == 0 for >1 minutes.
+  - alert: mysql_global_status_threads_connected
+    expr: mysql_global_status_threads_connected == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "mysql_global_status_threads_connected == 0 for >1 minutes in {{ $labels.instance }}"
+      description: "{{ $labels.job }}: mysql_global_status_threads_connected == 0"
+
+  # Alert for mysql_global_status_threads_connected > 100 for >1 minutes.
+  - alert: mysql_global_status_threads_connected
+    expr: mysql_global_status_threads_connected > 100
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "mysql_global_status_threads_connected > 100 for >1 minutes in {{ $labels.instance }}"
+      description: "{{ $labels.job }}: mysql_global_status_threads_connected > 100"
+
+  # Alert for mysql_global_status_slow_queries != 0 for >1 minutes.
+  - alert: mysql_global_status_slow_queries
+    expr: rate(mysql_global_status_slow_queries[5m]) > 3
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "mysql_global_status_slow_queries != 0 for >1 minutes in {{ $labels.instance }}"
+      description: "{{ $labels.job }}: mysql_global_status_slow_queries != 0"
+
+  # Alert for mysql_global_status_aborted_connects != 0 for >1 minutes.
+  - alert: mysql_global_status_aborted_connects
+    expr: mysql_global_status_aborted_connects != 0
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "mysql_global_status_aborted_connects != 0 for >1 minutes in {{ $labels.instance }}"
+      description: "{{ $labels.job }}: mysql_global_status_aborted_connects != 0"
