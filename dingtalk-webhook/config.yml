@@ -41,3 +41,6 @@ receivers:
   email_configs:
   - to: 'hge@mesosphere.com,chencw@paraview.cn, zgao@d2iq.com'
     send_resolved: true
+
+templates:
+- '/mnt/mesos/sandbox/config/IaaSDev.tmpl'
