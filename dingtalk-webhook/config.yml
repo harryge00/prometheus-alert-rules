@@ -31,16 +31,13 @@ route:
   repeat_interval: 30m
 
   # A default receiver
-  receiver: 
-  - 'send_to_dingding_webhook1'
-  - 'mail-notifications'
+  receiver: 'send_to_dingding_and_email'
 
 receivers:
-- name: send_to_dingding_webhook1
+- name: send_to_dingding_and_email
   webhook_configs:
   - send_resolved: true
     url: http://dingtalk-webhook.marathon.l4lb.thisdcos.directory:8060/dingtalk/webhook1/send
-- name: 'mail-notifications'
   email_configs:
   - to: 'hge@mesosphere.com,chencw@paraview.cn, zgao@d2iq.com'
     send_resolved: true
