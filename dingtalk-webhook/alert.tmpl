@@ -5,7 +5,7 @@
 {{ define "__description" }}{{ end }}
 
 {{ define "__text_alert_list" }}{{ range . }}Labels:
-Cluster: IaaS-DEV
+Cluster: IaaS-PROD
 {{ range .Labels.SortedPairs }} - {{ .Name }} = {{ .Value }}
 {{ end }}Annotations:
 {{ range .Annotations.SortedPairs }} - {{ .Name }} = {{ .Value }}
