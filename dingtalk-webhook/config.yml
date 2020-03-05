@@ -43,4 +43,4 @@ receivers:
     send_resolved: true
 
 templates:
-- '/mnt/mesos/sandbox/config/IaaSDev.tmpl'
+- '/mnt/mesos/sandbox/config/alert.tmpl'
