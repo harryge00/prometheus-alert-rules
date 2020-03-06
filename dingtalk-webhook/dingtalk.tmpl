@@ -2,7 +2,7 @@
 {{ define "__alertmanagerURL" }}{{ .ExternalURL }}/#/alerts?receiver={{ .Receiver }}{{ end }}
 
 {{ define "__text_alert_list" }}{{ range . }}
-**Labels**
+**标签**
 {{ range .Labels.SortedPairs }}> - {{ .Name }}: {{ .Value | markdown | html }}
 {{ end }}
 **Annotations**
@@ -14,12 +14,12 @@
 {{ define "default.__text_alert_list" }}{{ range . }}
 #### \[{{ .Labels.severity | upper }}\] {{ .Annotations.summary }}
 
-**Description:** {{ .Annotations.description }}
+**内容:** {{ .Annotations.description }}
 
-**Graph:** [📈]({{ .GeneratorURL }})
+**图像:** [📈]({{ .GeneratorURL }})
 
-**Details:**
-Cluster: IaaS-PROD
+**详情:**
+Cluster: IaaS-Dev
 {{ range .Labels.SortedPairs }}{{ if and (ne (.Name) "severity") (ne (.Name) "summary") }}> - {{ .Name }}: {{ .Value | markdown | html }}
 {{ end }}{{ end }}
 {{ end }}{{ end }}
