@@ -130,5 +130,5 @@ groups:
     labels:
       severity: warning
     annotations:
-      summary: "rate(mysql_global_status_aborted_connects[2m]) > 0.01 for >3 minutes in {{ $labels.instance }}"
-      description: "{{ $labels.job }}: rate(mysql_global_status_aborted_connects[2m]) > 0.01"
+      summary: "{{ $labels.instance }}: mysql_global_status_aborted_connects[2m] > 0.01 的时间超过3分钟"
+      description: "{{ $labels.job }}: mysql_global_status_aborted_connects[2m]) > 0.01"
