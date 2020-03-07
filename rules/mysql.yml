@@ -14,8 +14,8 @@ groups:
     labels:
       severity: warning
     annotations:
-      summary: "Slave replication is not running in {{ $labels.instance }}"
-      description: "{{ $labels.job }}: Slave replication (IO or SQL) has been down for more than 2 minutes."
+      summary: "{{ $labels.instance }}: MySQL Slave副本未运行"
+      description: "{{ $labels.job }}: MySQL Slave副本 (IO or SQL) 停止运行超过了2分钟."
 
   - alert: MySQLReplicationLag
     expr: (mysql_slave_lag_seconds > 30) and ON(instance) (predict_linear(mysql_slave_lag_seconds[5m],
@@ -24,17 +24,16 @@ groups:
     labels:
       severity: critical
     annotations:
-      description: The mysql slave replication has fallen behind and is not recovering
-      summary: MySQL slave replication is lagging
+      description: "MySQL Slave副本复制发生滞后，未恢复"
+      summary: "MySQL Slave副本复制发生滞后"
   
   - alert: MySQLInnoDBLogWaits
     expr: rate(mysql_global_status_innodb_log_waits[15m]) > 10
     labels:
       severity: warning
     annotations:
-      summary: "MySQL innodb log writes stalling in {{ $labels.instance }}"
-      description: "{{ $labels.job }}: innodb logs are waiting for disk at a rate of {{$value}} /
-              second"
+      summary: "{{ $labels.instance }}: MySQL innodb 日志写入发生阻塞"
+      description: "{{ $labels.job }}: innodb 日志等待写入磁盘的时间为 {{$value}} 秒"
 
   # Alert for mysql_global_status_connection_errors_total !=0 for >1 minutes.
   - alert: mysql_global_status_connection_errors_total
@@ -43,8 +42,8 @@ groups:
     labels:
       severity: warning
     annotations:
-      summary: "mysql_global_status_connection_errors_total !=0 for >1 minutes in {{ $labels.instance }}"
-      description: "{{ $labels.job }}: mysql_global_status_connection_errors_total !=0"
+      summary: "{{ $labels.instance }}: mysql_global_status_connection_errors_total的值不为0的时间超过了1分钟"
+      description: "{{ $labels.job }}: mysql_global_status_connection_errors_total的值不为0"
 
   # Alert for mysql_global_status_uptime == 0 for >1 minutes.
   - alert: mysql_global_status_uptime
@@ -53,8 +52,8 @@ groups:
     labels:
       severity: critical
     annotations:
-      summary: "mysql_global_status_uptime == 0 for >1 minutes in {{ $labels.instance }}"
-      description: "{{ $labels.job }}: mysql_global_status_uptime == 0"
+      summary: "{{ $labels.instance }}: mysql_global_status_uptime 的值为0的时间超过了1分钟"
+      description: "{{ $labels.job }}: mysql_global_status_uptime 的值为0"
 
   # Alert for mysql_up == 0 for >1 minutes.
   - alert: mysql_up
@@ -63,8 +62,8 @@ groups:
     labels:
       severity: critical
     annotations:
-      summary: "mysql_up == 0 for >1 minutes in {{ $labels.instance }}"
-      description: "{{ $labels.job }}: mysql_up == 0"
+      summary: "{{ $labels.instance }}: mysql_up的值为0超过了1分钟"
+      description: "{{ $labels.job }}: mysql_up的值为0"
 
   - alert: Mysql_Too_Many_Connections
     expr: rate(mysql_global_status_connections[5m]) > 100
@@ -81,8 +80,8 @@ groups:
     labels:
       severity: warning
     annotations:
-      summary: "{{$labels.instance}}: Mysql_High_QPS detected"
-      description: "{{$labels.instance}} of {{ $labels.job }}: Mysql opreation is more than 500 per second ,(current value is: {{ $value }})"  
+      summary: "{{$labels.instance}}: 探测到 Mysql_High_QPS"
+      description: "{{$labels.instance}} of {{ $labels.job }}: Mysql 操作数超过每秒500 ,(当前值为: {{ $value }})"  
 
   # Alert for mysql_global_status_threads_cached == 0 for >1 minutes.
   - alert: mysql_global_status_threads_cached 
@@ -91,8 +90,8 @@ groups:
     labels:
       severity: warning
     annotations:
-      summary: "mysql_global_status_threads_cached == 0 for >1 minutes in {{ $labels.instance }}"
-      description: "{{ $labels.job }}: mysql_global_status_threads_cached == 0"
+      summary: "mysql_global_status_threads_cached == 0 for >1 minutes in {{ $labels.instance }}：mysql_global_status_threads_cached 的值为0超过了1分钟"
+      description: "{{ $labels.job }}: mysql_global_status_threads_cached 的值为0"
 
   # Alert for mysql_global_status_threads_connected == 0 for >1 minutes.
   - alert: mysql_global_status_threads_connected
@@ -101,8 +100,8 @@ groups:
     labels:
       severity: warning
     annotations:
-      summary: "mysql_global_status_threads_connected == 0 for >1 minutes in {{ $labels.instance }}"
-      description: "{{ $labels.job }}: mysql_global_status_threads_connected == 0"
+      summary: "{{ $labels.instance }}: mysql_global_status_threads_connected 的值为0超过了1分钟"
+      description: "{{ $labels.job }}: mysql_global_status_threads_connected 的值为0"
 
   # Alert for mysql_global_status_threads_connected > 100 for > 2 minutes.
   - alert: mysql_global_status_threads_connected
@@ -111,8 +110,8 @@ groups:
     labels:
       severity: warning
     annotations:
-      summary: "{{$labels.instance}}: Mysql Too Many Connections detected"
-      description: "{{$labels.job}}: Mysql Connections is more than 100 per second ,(current value is: {{ $value }})"  
+      summary: "{{$labels.instance}}: 探测到 Mysql 非常多的连接数"
+      description: "{{$labels.job}}: Mysql 连接数超过每秒100 ,(当前值为: {{ $value }})"  
 
   # Alert for mysql_global_status_slow_queries != 0 for >1 minutes.
   - alert: mysql_global_status_slow_queries
@@ -121,8 +120,8 @@ groups:
     labels:
       severity: warning
     annotations:
-      summary: "mysql_global_status_slow_queries != 0 for >1 minutes in {{ $labels.instance }}"
-      description: "{{ $labels.job }}: mysql_global_status_slow_queries != 0"
+      summary: "{{ $labels.instance }}: mysql_global_status_slow_queries 的值为0的时间超过了1分钟"
+      description: "{{ $labels.job }}: mysql_global_status_slow_queries 的值为0"
 
   # Alert for mysql_global_status_aborted_connects != 0 for >1 minutes.
   - alert: mysql_global_status_aborted_connects
@@ -131,5 +130,5 @@ groups:
     labels:
       severity: warning
     annotations:
-      summary: "rate(mysql_global_status_aborted_connects[2m]) > 0.01 for >3 minutes in {{ $labels.instance }}"
-      description: "{{ $labels.job }}: rate(mysql_global_status_aborted_connects[2m]) > 0.01"
+      summary: "{{ $labels.instance }}: mysql_global_status_aborted_connects[2m] > 0.01 的时间超过3分钟"
+      description: "{{ $labels.job }}: mysql_global_status_aborted_connects[2m]) > 0.01"
