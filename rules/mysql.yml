@@ -81,7 +81,7 @@ groups:
       severity: warning
     annotations:
       summary: "{{$labels.instance}}: 探测到 MySQL_High_QPS"
-      description: "{{$labels.instance}} of {{ $labels.job }}: MySQL 操作数超过每秒500 ,(当前值为: {{ $value }})"  
+      description: "{{$labels.instance}} of {{ $labels.job }}: MySQL 操作数超过每秒2000 ,(当前值为: {{ $value }})"  
 
   # Alert for mysql_global_status_threads_cached == 0 for >1 minutes.
   - alert: mysql_global_status_threads_cached 
