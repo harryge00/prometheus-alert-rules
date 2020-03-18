@@ -39,7 +39,7 @@ receivers:
   - send_resolved: true
     url: http://dingtalk-webhook.marathon.l4lb.thisdcos.directory:8060/dingtalk/webhook1/send
   email_configs:
-  - to: 'hge@mesosphere.com,chencw@paraview.cn,zgao@d2iq.com'
+  - to: 'sunyu7@faw.com.cn,wanghonglei@faw.com.cn,hge@mesosphere.com,chencw@paraview.cn,zgao@d2iq.com,gwang@d2iq.com'
     send_resolved: true
 
 templates:
