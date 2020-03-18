@@ -75,13 +75,13 @@ groups:
       description: "{{ $labels.job }}: 过去5分钟内MySQL连接增长率>100: {{ $value }}"  
 
   - alert: MySQL QPS 过高
-    expr: rate(mysql_global_status_queries[5m]) > 2000 
+    expr: rate(mysql_global_status_queries[5m]) > 1400 
     for: 2m
     labels:
       severity: warning
     annotations:
       summary: "{{$labels.instance}}: 探测到 MySQL_High_QPS"
-      description: "{{$labels.instance}} of {{ $labels.job }}: MySQL 操作数超过每秒2000 ,(当前值为: {{ $value }})"  
+      description: "{{$labels.instance}} of {{ $labels.job }}: MySQL 操作数超过每秒1400 ,(当前值为: {{ $value }})"  
 
   # Alert for mysql_global_status_threads_cached == 0 for >1 minutes.
   - alert: mysql_global_status_threads_cached 
