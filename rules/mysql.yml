@@ -83,16 +83,6 @@ groups:
       summary: "{{$labels.instance}}: 探测到 MySQL_High_QPS"
       description: "{{$labels.instance}} of {{ $labels.job }}: MySQL 操作数超过每秒1400 ,(当前值为: {{ $value }})"  
 
-  # Alert for mysql_global_status_threads_cached == 0 for >1 minutes.
-  - alert: mysql_global_status_threads_cached 
-    expr: mysql_global_status_threads_cached == 0
-    for: 1m
-    labels:
-      severity: warning
-    annotations:
-      summary: "mysql_global_status_threads_cached == 0 for >1 minutes in {{ $labels.instance }}：mysql_global_status_threads_cached 的值为0超过了1分钟"
-      description: "{{ $labels.job }}: mysql_global_status_threads_cached 的值为0"
-
   # Alert for mysql_global_status_threads_connected == 0 for >1 minutes.
   - alert: MySQL全局连接线程数为0
     expr: mysql_global_status_threads_connected == 0
