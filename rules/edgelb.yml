@@ -1,0 +1,37 @@
+groups:
+- name: EdgeLBAlerts
+  rules:
+  - alert: EdgeLB-HAProxy停止运行
+    expr: dcos_edgelb_haproxy_up == 0
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      description:  "{{ $labels.poolName }} 的实例 {{ $labels.instance }} 停止运行"
+
+  - alert: EdgeLB后端服务异常
+    expr: dcos_edgelb_haproxy_backend_up == 0
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      description: "在{{ $labels.instance }}上的{{ $labels.poolName }}的后端服务{{ $labels.backend }}异常"
+  
+  - alert: EdgeLB连接错误率升高
+    expr: rate(dcos_edgelb_haproxy_backend_connection_errors_total[1m]) > 0.1
+    for: 2m
+    labels:
+      severity: warning
+      value: '{{$value}}'
+    annotations:
+      description: "在{{ $labels.instance }}上的{{ $labels.poolName }}的后端服务{{ $labels.backend }}连接错误率过高"
+
+  - alert: EdgeLB前端请求错误增多
+    expr: rate(dcos_edgelb_haproxy_frontend_request_errors_total[1m])  > 0.3
+    for: 2m
+    labels:
+      severity: warning
+      value: '{{$value}}'
+    annotations:
+      description: "在{{ $labels.instance }}上的{{ $labels.poolName }}的前端{{ $labels.frontend }}请求错误率过高"
+
