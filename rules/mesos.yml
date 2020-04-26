@@ -2,7 +2,7 @@ groups:
 - name: mesos
   rules:
   - alert: Mesos master状态异常
-    expr: up{job="master-metrics"}==0 
+    expr: up{job="master-metrics"} offset 5s == 0 
     for: 30s
     labels:
       severity: critical
@@ -10,26 +10,17 @@ groups:
       summary: mesos master服务器可能宕机
       description: 请马上检查服务器{{$labels.instance}}!
 
-  - alert: mesos master健康状态
-    expr: mesos_master_uptime_secs <60
-    for: 1m
+  - alert: mesos master健康状态异常
+    expr: count(mesos_master_uptime_secs) < 3
+    for: 2m
     labels:
       severity: warning
     annotations:
-      summary: Mesos实例{{$labels.instance}}可能发生重启!
-      description: 主机{{$labels.host}}-状态{{$labels.state}}发生重启,请检查服务
-
-  - alert: mesos slave健康状态
-    expr: mesos_slave_uptime_secs <60
-    for: 1m
-    labels:
-      severity: warning
-    annotations:
-      summary: Mesos实例{{$labels.instance}}可能发生重启!
-      description: 主机{{$labels.host}}-角色{{$labels.role}}发生重启,请检查服务  
+      summary: mesos_master_uptime_secs指标缺失
+      description: 请马上检查Mesos master!
 
   - alert: Mesos agent状态异常
-    expr: up{job="agent-metrics"}==0 
+    expr: up{job="agent-metrics"} offset 5s == 0  
     for: 30s
     labels:
       severity: critical
@@ -62,7 +53,23 @@ groups:
   #   annotations:
   #     summary: slave集群{{$labels.host}}的内存分配百分比连续超过90%!
   #     description: 总百分比={{$value}}%
-      
+
+  - alert: Agent节点磁盘使用率过高
+    expr: disk_used_percent > 92
+    for: 3m
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{ $labels.instance }}: Agent节点磁盘使用率: {{$value}} "
+
+  - alert: Agent节点磁盘将满
+    expr: disk_used_percent > 98
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      summary: "{{ $labels.instance }}: Agent节点磁盘使用率: {{$value}} "
+
   - alert: mesos master选举情况
     expr: max(avg_over_time(mesos_master_elected[5m])) < 1
     for: 5m

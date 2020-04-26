@@ -72,16 +72,16 @@ groups:
       severity: warning
     annotations:
       summary: "{{$labels.instance}}: MySQL连接数增长率过高"
-      description: "{{ $labels.job }}: 过去5分钟内MySQL连接增长率>100: {{ $value }}"  
+      description: "{{ $labels.job }}: 过去5分钟内MySQL连接增长率: {{ $value }}"  
 
   - alert: MySQL QPS 过高
-    expr: rate(mysql_global_status_queries[5m]) > 1400 
+    expr: rate(mysql_global_status_queries[5m]) > 2000 
     for: 2m
     labels:
       severity: warning
     annotations:
       summary: "{{$labels.instance}}: 探测到 MySQL_High_QPS"
-      description: "{{$labels.instance}} of {{ $labels.job }}: MySQL 操作数超过每秒1400 ,(当前值为: {{ $value }})"  
+      description: "{{$labels.instance}} of {{ $labels.job }}: MySQL QPS过高 ,(当前值为: {{ $value }})"
 
   # Alert for mysql_global_status_threads_connected == 0 for >1 minutes.
   - alert: MySQL全局连接线程数为0
@@ -93,15 +93,15 @@ groups:
       summary: "{{ $labels.instance }}: mysql全局连接线程数为0的值为0超过了1分钟"
       description: "{{ $labels.job }}: mysql_global_status_threads_connected == 0"
 
-  # Alert for mysql_global_status_threads_connected > 100 for > 2 minutes.
-  - alert: mysql全局连接线程数过高
-    expr: max_over_time(mysql_global_status_threads_connected[5m]) > 300
-    for: 2m
-    labels:
-      severity: warning
-    annotations:
-      summary: "{{$labels.instance}}: MySQL 全局连接线程数大于300"
-      description: "{{$labels.job}}: MySQL 连续2分钟全局连接线程数大于300, (当前值为: {{ $value }})"  
+  # # Alert for mysql_global_status_threads_connected > 100 for > 2 minutes.
+  # - alert: mysql全局连接线程数过高
+  #   expr: max_over_time(mysql_global_status_threads_connected[5m]) > 300
+  #   for: 2m
+  #   labels:
+  #     severity: warning
+  #   annotations:
+  #     summary: "{{$labels.instance}}: MySQL 全局连接线程数大于300"
+  #     description: "{{$labels.job}}: MySQL 连续2分钟全局连接线程数大于300, (当前值为: {{ $value }})"  
 
   # Alert for mysql_global_status_slow_queries != 0 for >1 minutes.
   - alert: MySQL 慢查询过多
@@ -114,11 +114,11 @@ groups:
       description: "{{ $labels.job }}: rate(mysql_global_status_slow_queries[5m]) > 2"
 
   # Alert for mysql_global_status_aborted_connects != 0 for >1 minutes.
-  - alert: MySQL 连接异常中断
-    expr: rate(mysql_global_status_aborted_connects[2m]) > 0.03
-    for: 3m
-    labels:
-      severity: warning
-    annotations:
-      summary: "{{ $labels.instance }}: mysql_global_status_aborted_connects[2m] > 0.01 的时间超过3分钟"
-      description: "{{ $labels.job }}: mysql_global_status_aborted_connects[2m]) > 0.01"
+  # - alert: MySQL 连接异常中断
+  #   expr: rate(mysql_global_status_aborted_connects[2m]) > 0.03
+  #   for: 3m
+  #   labels:
+  #     severity: warning
+  #   annotations:
+  #     summary: "{{ $labels.instance }}: mysql_global_status_aborted_connects[2m] > 0.03 的时间超过3分钟"
+  #     description: "{{ $labels.job }}: mysql_global_status_aborted_connects[2m]) = {{ $value }}"
