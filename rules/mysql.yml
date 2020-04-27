@@ -75,7 +75,7 @@ groups:
       description: "{{ $labels.job }}: 过去5分钟内MySQL连接增长率: {{ $value }}"  
 
   - alert: MySQL QPS 过高
-    expr: rate(mysql_global_status_queries[5m]) > 2000 
+    expr: rate(mysql_global_status_queries[5m]) > 3300 
     for: 2m
     labels:
       severity: warning
