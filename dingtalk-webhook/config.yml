@@ -31,33 +31,15 @@ route:
   repeat_interval: 30m
 
   # A default receiver
-  receiver: dingding_and_email
+  receiver: email
 
   # A default receiver
   routes:
-  - receiver: dingding_and_email
+  - receiver: email
     continue: true
-  - receiver: bmc_email
-    group_by: ['instance', 'host', 'container_id']
 
 receivers:
-- name: bmc_email
+- name: email
   email_configs:
-  - to: 'bmcplmxs@faw.com.cn'
+  - to: 'zgao@d2iq.com'
     send_resolved: true
-    headers: 
-      Subject: '{{ template "email.bmc.subject" . }} '
-    html: '{{ template "email.dbaas.html" . }}'
-- name: dingding_and_email
-  webhook_configs:
-  - send_resolved: true
-    url: http://dingtalk-webhook.marathon.l4lb.thisdcos.directory:8060/dingtalk/webhook1/send
-  email_configs:
-  - to: 'sunyu7@faw.com.cn,wanghonglei@faw.com.cn,xuzhioffice@163.com,hge@mesosphere.com,chencw@paraview.cn,zgao@d2iq.com,gwang@d2iq.com'
-    send_resolved: true
-    headers: 
-      Subject: '{{ template "email.dbaas.subject" . }} '
-
-templates:
-- '/mnt/mesos/sandbox/config/alert.tmpl'
-- '*.tmpl'
