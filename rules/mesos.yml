@@ -55,7 +55,7 @@ groups:
   #     description: 总百分比={{$value}}%
 
   - alert: Agent节点磁盘使用率过高
-    expr: disk_used_percent > 92
+    expr: disk_used_percent > 80
     for: 3m
     labels:
       severity: warning
