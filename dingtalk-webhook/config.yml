@@ -1,7 +1,7 @@
 global:
-  smtp_smarthost: 'smtp.126.com:25'
-  smtp_from: 'fawdbaas@126.com'
-  smtp_auth_username: 'fawdbaas@126.com'
+  smtp_smarthost: 'mail.faw.com.cn:25'
+  smtp_from: 'DBaaS@faw.com.cn'
+  smtp_auth_username: 'DBaaS'
 
 route:
   # The labels by which incoming alerts are grouped together. For example,
