@@ -3,7 +3,7 @@ groups:
   rules:
   - alert: Mesos master状态异常
     expr: up{job="master-metrics"} offset 5s == 0 
-    for: 30s
+    for: 1m
     labels:
       severity: critical
     annotations:
@@ -21,7 +21,7 @@ groups:
 
   - alert: Mesos agent状态异常
     expr: up{job="agent-metrics"} offset 5s == 0  
-    for: 30s
+    for: 2m
     labels:
       severity: critical
     annotations:
