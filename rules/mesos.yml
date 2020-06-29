@@ -2,8 +2,8 @@ groups:
 - name: mesos
   rules:
   - alert: Mesos master状态异常
-    expr: up{job="master-metrics"} offset 5s == 0 
-    for: 1m
+    expr: delta(up{job="master-metrics"}[5m]) > 0 
+    for: 2m
     labels:
       severity: critical
     annotations:
@@ -20,7 +20,7 @@ groups:
       description: 请马上检查Mesos master!
 
   - alert: Mesos agent状态异常
-    expr: up{job="agent-metrics"} offset 5s == 0  
+    expr: delta(up{job="agent-metrics"}[5m]) > 0
     for: 2m
     labels:
       severity: critical
@@ -78,6 +78,15 @@ groups:
     annotations:
       summary: master选举失败,请检查zookeeper服务!
 
+  - alert: Mesos Slave未注册
+    expr: delta(mesos_slave_registered[5m]) > 0
+    for: 5m
+    labels:
+      severity: 'warning'
+      service: 'dcos-infrastructure'
+    annotations:
+      summary: "{ $labels.instance }} agent 没有注册到master"
+
   - alert: 内存利用率过高
     expr: mem_used_percent > 85
     for: 2m
@@ -87,9 +96,9 @@ groups:
       summary: "{{ $labels.instance }} 内存利用率过高: {{$value}}"
 
   - alert: cpu利用率过高
-    expr: 100-cpu_usage_idle > 85
+    expr: avg(cpu_usage_idle) by (instance) < 20
     for: 2m
     labels:
       severity: warning
     annotations:
-      summary: "{{ $labels.instance }} cpu利用率过高: {{$value}}"
+      summary: "{{ $labels.instance }} cpu利用率超过80%"
