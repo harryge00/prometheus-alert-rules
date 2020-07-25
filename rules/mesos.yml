@@ -102,3 +102,11 @@ groups:
       severity: warning
     annotations:
       summary: "{{ $labels.instance }} cpu利用率超过80%"
+
+  - alert: 容器内存利用率过高，有OOM风险
+    expr: mem_rss_bytes/mem_limit_bytes > 0.9
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: "{{$labels.executor_name}}/{{ $labels.instance }} 容器内存利用率: {{$value}}"

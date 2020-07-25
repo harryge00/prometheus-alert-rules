@@ -65,6 +65,15 @@ groups:
       summary: "{{ $labels.instance }}: mysql_up的值为0超过了1分钟"
       description: "{{ $labels.job }}: mysql_up的值为0"
 
+  - alert: MySQL正在重启
+    expr: mysql_global_status_uptime < 300
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{ $labels.instance }}: MySQL正在重启"
+      description: "{{ $labels.job }}: MySQL正在重启"
+
   - alert: MySQL连接数增长率过高
     expr: rate(mysql_global_status_connections[5m]) > 100
     for: 2m
