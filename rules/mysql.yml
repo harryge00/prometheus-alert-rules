@@ -72,7 +72,16 @@ groups:
       severity: warning
     annotations:
       summary: "{{$labels.instance}}: MySQL连接数增长率过高"
-      description: "{{ $labels.job }}: 过去5分钟内MySQL连接增长率: {{ $value }}"  
+      description: "{{ $labels.job }}: 过去5分钟内MySQL连接增长率: {{ $value }}"
+
+  - alert: MySQL连接数过高
+    expr: mysql_global_status_threads_connected > 3200
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{$labels.instance}}: MySQL连接数过高"
+      description: "{{ $labels.job }}: MySQL连接数: {{ $value }}"  
 
   - alert: MySQL QPS 过高
     expr: rate(mysql_global_status_queries[5m]) > 3900 
