@@ -53,7 +53,7 @@ receivers:
   - send_resolved: true
     url: http://dingtalk-webhook.marathon.l4lb.thisdcos.directory:8060/dingtalk/webhook1/send
   email_configs:
-  - to: 'wanghonglei@faw.com.cn,xuzhioffice@163.com,hge@mesosphere.com,chencw@paraview.cn,zgao@d2iq.com,gwang@d2iq.com'
+  - to: 'hge@mesosphere.com,zgao@d2iq.com,gwang@d2iq.com'
     send_resolved: true
     headers: 
       Subject: '{{ template "email.dbaas.subject" . }} '
